@@ -52,8 +52,8 @@ Flow Navigation (Screen to Screen)
 [list screen navigation here]
 ...
 Wireframes
-[image/lowResWireframe.jpg]
-[image/highResWireframe.jpg]
+(image/lowResWireframe.jpg)
+(image/highResWireframe.jpg)
 
 
 
