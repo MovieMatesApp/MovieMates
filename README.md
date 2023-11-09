@@ -31,29 +31,10 @@ Optional Features
 - offer premium features like ad-free experience or a subscription model
 
 2. Screen Archetypes
-[list first screen here]
-[list associated required story here]
-...
-[list second screen here]
-[list associated required story here]
-...
-3. Navigation
-Tab Navigation (Tab to Screen)
-
-[fill out your first tab]
-[fill out your second tab]
-[fill out your third tab]
-Flow Navigation (Screen to Screen)
-
-[list first screen here]
-[list screen navigation here]
-...
-[list second screen here]
-[list screen navigation here]
-...
-Wireframes
 <img src='lowResWireframe.jpg' title='Low Res Wireframe' width='' alt='Low Res' />
 <img src='highResWireframe.jpg' title='High Res Wireframe' width='' alt='High Res'/>
+
+3. Navigation
 
 
 [BONUS] Digital Wireframes & Mockups
