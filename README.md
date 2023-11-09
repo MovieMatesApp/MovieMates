@@ -52,7 +52,9 @@ Flow Navigation (Screen to Screen)
 [list screen navigation here]
 ...
 Wireframes
-[Add picture of your hand sketched wireframes in this section] 
+[Low Res Wireframe](image/lowResWireframe.jpg)
+[High Res Wireframe](image/highResWireframe.jpg)
+
 
 
 
