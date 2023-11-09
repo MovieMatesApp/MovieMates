@@ -52,10 +52,8 @@ Flow Navigation (Screen to Screen)
 [list screen navigation here]
 ...
 Wireframes
-(image/lowResWireframe.jpg)
-(image/highResWireframe.jpg)
-
-
+<img src='image/lowResWireframe.jpg' title='Low Res Wireframe' width='' />
+<img src='image/highResWireframe.jpg' title='Low Res Wireframe' width='' />
 
 
 [BONUS] Digital Wireframes & Mockups
