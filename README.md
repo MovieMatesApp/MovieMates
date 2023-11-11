@@ -34,6 +34,13 @@ Optional Features
 <img src='lowResWireframe.jpg' title='Low Res Wireframe' width='' alt='Low Res' />
 <img src='highResWireframe.jpg' title='High Res Wireframe' width='' alt='High Res'/>
 
+## Video Walkthrough
+
+Here's a walkthrough of UI Created using FIGMA:
+
+<img src='https://github.com/MovieMatesApp/MovieMates/blob/main/Milestone1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
 3. Navigation
 
 
