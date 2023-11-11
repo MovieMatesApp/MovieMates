@@ -32,7 +32,7 @@ Optional Features
 
 2. Screen Archetypes
 <img src='lowResWireframe.jpg' title='Low Res Wireframe' width='' alt='Low Res' />
-<img src='highResWireframe.jpg' title='High Res Wireframe' width='' alt='High Res'/>
+<img src='HighResWireFrame.JPG' title='High Res Wireframe' width='' alt='High Res'/>
 
 ## Video Walkthrough
 
