@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "803683660631",
+    "project_id": "moviemates-d4e11",
+    "storage_bucket": "moviemates-d4e11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803683660631:android:4a2f40575cf209b4ae4412",
+        "android_client_info": {
+          "package_name": "com.example.moviemates"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNeXxfx7aLoZ7e4nu1SmDWvXNcshvsYT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
