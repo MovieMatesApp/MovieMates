@@ -50,7 +50,8 @@ Here's a walkthrough of UI Created using FIGMA:
 Milestone 2 - Build Sprint 1 (Unit 8)
 GitHub Project board
 [Add screenshot of your Project Board with three milestones visible in this section] 
-
+## Video Walkthrough
+<img src='https://github.com/MovieMatesApp/MovieMates/blob/main/VideoWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 Issue cards
 [Add screenshot of your Project Board with the issues that you've been working on for this unit's milestone] 
 [Add screenshot of your Project Board with the issues that you're working on in the NEXT sprint. It should include issues for next unit with assigned owners.] 
