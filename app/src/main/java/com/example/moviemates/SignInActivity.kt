@@ -50,6 +50,8 @@ class SignInActivity : AppCompatActivity() {
                         Log.d("SignInActivity", "signInWithEmail:success")
                         // You can navigate to the next activity or perform other actions here
                         showToast("Login Successful")
+                        val intent = Intent(this, SignUpActivity::class.java)
+                        startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("SignInActivity", "signInWithEmail:failure", it.exception)
