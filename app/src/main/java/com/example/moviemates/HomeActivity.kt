@@ -12,9 +12,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val fragmentManager: FragmentManager = supportFragmentManager
-
-
+        replaceFragment(MoviesFragment())
+        
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
 
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
