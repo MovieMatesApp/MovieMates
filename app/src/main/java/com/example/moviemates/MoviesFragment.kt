@@ -61,7 +61,7 @@ class MoviesFragment : Fragment() {
             override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
                 Log.i(TAG, "Successfully fetched articles: $json")
                 try {
-                    val searchMovieResponse = Json.decodeFromString<SearchMovieResponse>(json.toString())
+                    val searchMovieResponse = Json.decodeFromString<SearchMovieResponse>(json.jsonObject.toString())
 
                     // Check if the list is not null before using it
                     if (searchMovieResponse.docs != null) {

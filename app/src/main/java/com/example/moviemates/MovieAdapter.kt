@@ -41,7 +41,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
             val article = movies[absoluteAdapterPosition]
 
             //  Navigate to Details screen and pass selected article //need to change this to a fragment
-            val intent = Intent(context, MovieDetailActivity::class.java)
+            val intent = Intent(context, MovieDetailFragment::class.java)
             intent.putExtra(MOVIE_EXTRA, article)
             context.startActivity(intent)
         }
