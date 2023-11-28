@@ -62,6 +62,7 @@ List the issues you completed this sprint
 Milestone 3 - Build Sprint 2 (Unit 9)
 GitHub Project board
 [Add screenshot of your Project Board with the updated status of issues for Milestone 3. Note that these should include the updated issues you worked on for this sprint and not be a duplicate of Milestone 2 Project board.] 
+![image](https://github.com/MovieMatesApp/MovieMates/assets/100811063/0b7ba9a1-922b-4e04-8d48-ad3083631d15)
 
 Completed user stories
 List the completed user stories from this unit
