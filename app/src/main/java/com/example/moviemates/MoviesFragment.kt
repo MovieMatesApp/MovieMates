@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.Headers
@@ -48,37 +51,52 @@ class MoviesFragment : Fragment() {
         }
         val client = AsyncHttpClient()
         val params = RequestParams()
-        client.get(MOVIE_SEARCH_URL + SEARCH_API_KEY, object : JsonHttpResponseHandler() {
-            override fun onFailure(
-                statusCode: Int,
-                headers: Headers?,
-                response: String?,
-                throwable: Throwable?
-            ) {
-                Log.e(TAG, "Failed to fetch articles: $statusCode")
-            }
+        params["api_key"] = SEARCH_API_KEY
+        client[
+            "https://api.themoviedb.org/3/movie/now_playing",
+            params,
+            object : JsonHttpResponseHandler()
+            {
+                /*
+                 * The onSuccess function gets called when
+                 * HTTP response status is "200 OK"
+                 */
+                override fun onSuccess(
+                    statusCode: Int,
+                    headers: Headers,
+                    json: JSON
+                ) {
+                    // The wait for a response is over
 
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
-                Log.i(TAG, "Successfully fetched articles: $json")
-                try {
-                    val searchMovieResponse = Json.decodeFromString<SearchMovieResponse>(json.jsonObject.toString())
+                    //TODO - Parse JSON into Models
+                    Log.d("JSON Response", json.toString())
+                    val resultsJSON = json.jsonObject.get("results")
 
-                    // Check if the list is not null before using it
-                    if (searchMovieResponse.docs != null) {
-                        // Add movies to the existing list or use it as needed
-                        movies.addAll(searchMovieResponse.docs)
-
-                        // Now you have the list of movies in the 'moviesList'
-                        // Do whatever you need to do with the moviesList
-                    }
+                    val gson = Gson()
+                    val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
+                    val models: List<Movie> = gson.fromJson(resultsJSON.toString(), arrayMovieType)
+                    movies.addAll(models)
                     movieAdapter.notifyDataSetChanged()
-
-                } catch (e: JSONException) {
-                    Log.e(TAG, "Exception: $e")
+                    // Look for this in Logcat:
+                    Log.d("MoviesFragment", "response successful")
                 }
-            }
 
-        })
+                /*
+                 * The onFailure function gets called when
+                 * HTTP response status is "4XX" (eg. 401, 403, 404)
+                 */
+                override fun onFailure(
+                    statusCode: Int,
+                    headers: Headers?,
+                    errorResponse: String,
+                    t: Throwable?
+                ) {
+                    // If the error is not null, log it!
+                    t?.message?.let {
+                        Log.e("MoviesFragment", errorResponse)
+                    }
+                }
+            }]
         return view
     }
 }
