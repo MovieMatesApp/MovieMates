@@ -30,6 +30,10 @@ class HomeActivity : AppCompatActivity() {
                     replaceFragment(AccountFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
+                R.id.nav_event -> {
+                    replaceFragment(EventFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
                 else -> false
             }
         }
@@ -37,9 +41,4 @@ class HomeActivity : AppCompatActivity() {
 
     }
     private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
-    }
-
-}
+    
