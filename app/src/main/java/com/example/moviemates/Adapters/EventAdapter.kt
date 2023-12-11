@@ -4,24 +4,29 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviemates.R
+import com.example.moviemates.movieModels.EventModel
 
-class CommentAdapter(private val comments: List<String>) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+class EventAdapter(private val eventList: List<EventModel>) : RecyclerView.Adapter<EventAdapter.CommentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_item_comments, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.activty_item_events, parent, false)
         return CommentViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val comment = comments[position]
-        holder.commentTextView.text = comment
+        val events = eventList[position]
+        holder.eventTextView.text= events.comment
+        holder.eventDate.text =events.eventDate
+        holder.userData.text =events.userEmail
     }
 
     override fun getItemCount(): Int {
-        return comments.size
+        return eventList.size
     }
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val commentTextView: TextView = itemView.findViewById(R.id.commentTextView)
+        val eventTextView: TextView = itemView.findViewById(R.id.eventDisplayText)
+        val eventDate: TextView = itemView.findViewById(R.id.eventDateTextView)
+        val userData:TextView = itemView.findViewById(R.id.userInfoTextView)
     }
 }

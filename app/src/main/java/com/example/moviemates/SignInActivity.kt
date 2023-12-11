@@ -48,9 +48,15 @@ class SignInActivity : AppCompatActivity() {
                     if (it.isSuccessful) {
                         // Sign-in success
                         Log.d("SignInActivity", "signInWithEmail:success")
-                        // You can navigate to the next activity or perform other actions here
+                        val user = firebaseAuth.currentUser
+                        val userEmail = user?.email
+                        val userId = user?.uid
+
                         showToast("Login Successful")
-                        val intent = Intent(this, HomeActivity::class.java)
+
+                        val intent = Intent(this, Dashboard::class.java)
+                        intent.putExtra("USER_EMAIL", userEmail)
+                        intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.

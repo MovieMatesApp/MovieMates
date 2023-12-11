@@ -15,12 +15,16 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var commentAdapter: CommentAdapter
     private val comments = mutableListOf<String>()
     private val db = FirebaseFirestore.getInstance()
-
+    private lateinit var userEmail: String
+    private lateinit var userId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+        userEmail = intent.getStringExtra("USER_EMAIL") ?: ""
+        userId = intent.getStringExtra("USER_ID") ?: ""
+       binding.textViewEmail.text ="Welcome, $userEmail!"
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val eventsCollection = db.collection("comments")
@@ -39,7 +43,7 @@ class MainActivity2 : AppCompatActivity() {
 
                 val commentData = hashMapOf(
                     "comment" to myComment,
-                    "userId" to 1
+                    "userId" to userId
                 )
 
 

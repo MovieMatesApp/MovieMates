@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MovieMates"
         tools:targetApi="31">
         <activity
+            android:name=".Dashboard"
+            android:exported="false" />
+        <activity
             android:name=".item_comments"
             android:exported="false" />
         <activity
