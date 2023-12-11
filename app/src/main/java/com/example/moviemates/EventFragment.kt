@@ -12,7 +12,7 @@ class EventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View?{
-        val view=inflater.inflate(R.layout.activity_post,container,false)
+        val view=inflater.inflate(R.layout.activity_main2,container,false)
         //val textView: TextView =view.findViewById(R.id.textViewHome)
         // Customize the fragment view as needed
         return view

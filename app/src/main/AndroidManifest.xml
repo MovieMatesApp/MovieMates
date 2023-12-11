@@ -15,6 +15,12 @@
         android:theme="@style/Theme.MovieMates"
         tools:targetApi="31">
         <activity
+            android:name=".item_comments"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".PostActivity"
             android:exported="false" />
         <activity
