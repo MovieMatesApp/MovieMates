@@ -1,8 +1,11 @@
 package com.example.moviemates.movieModels
 
-data class EventModel(
-    var comment: String,
-    val userId: String,
-    val userEmail: String,
-    val eventDate: String
-)
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+
+interface MovieApiService {
+    @GET("movie/popular")
+    fun getPopularMovies(@Query("api_key") apiKey: String): Call<List<MovieInfo>>
+}

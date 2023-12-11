@@ -1,68 +1,75 @@
 package com.example.moviemates
-
+// Dashboard.kt
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviemates.Adapters.MovieInfoAdapter
 import com.example.moviemates.databinding.ActivityDashboardBinding
+import com.example.moviemates.movieModels.MovieApiService
 import com.example.moviemates.movieModels.MovieInfo
-import com.example.moviemates.movieModels.MovieInfoJsonParser
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var userEmail: String
     private lateinit var userId: String
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
-
-
-
-
-        // Assuming you have the actual JSON response as a string
-        val jsonString = "[{\"id\": 1, \"original_title\": \"Movie 1\", \"poster_path\": \"/path1.jpg\", \"overview\": \"Overview 1\"}," +
-                "{\"id\": 2, \"original_title\": \"Movie 2\", \"poster_path\": \"/path2.jpg\", \"overview\": \"Overview 2\"}]"
-
-// Use Gson to convert JSON to List<MovieInfo>
-        val movieInfoList: List<MovieInfo> = Gson().fromJson(jsonString, object : TypeToken<List<MovieInfo>>() {}.type)
-
-// Now you can use movieInfoList as needed, for example, set it to the RecyclerView adapter
-        val recyclerView: RecyclerView = findViewById(R.id.movie_info_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = MovieInfoAdapter(this, movieInfoList)
-
-
-
-
-
-
-
         setContentView(binding.root)
+
+        val recyclerView: RecyclerView = findViewById(R.id.movie_info_recycler)
+
+        // Initialize Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // Create the service using Retrofit
+        val movieApiService = retrofit.create(MovieApiService::class.java)
+
+        // Make the API call
+        val call = movieApiService.getPopularMovies("c30b6be13072568f3198912087cdda39")
+
+        call.enqueue(object : Callback<List<MovieInfo>> {
+            override fun onResponse(call: Call<List<MovieInfo>>, response: Response<List<MovieInfo>>) {
+                if (response.isSuccessful) {
+                    val movieInfoList = response.body()
+
+                    // Set up RecyclerView with the custom adapter
+                    recyclerView.layoutManager = LinearLayoutManager(this@Dashboard)
+                    recyclerView.adapter = MovieInfoAdapter(this@Dashboard, movieInfoList ?: emptyList())
+                }
+            }
+
+            override fun onFailure(call: Call<List<MovieInfo>>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+
         userEmail = intent.getStringExtra("USER_EMAIL") ?: ""
         userId = intent.getStringExtra("USER_ID") ?: ""
         binding.welcomeMessage.text = "Welcome, $userEmail!"
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, MoviesFragment())
-                .commit()}
+                .commit()
+        }
 
-        binding.myEventBtn.setOnClickListener{
+        binding.myEventBtn.setOnClickListener {
             val intent = Intent(this, EventActivity::class.java)
             intent.putExtra("USER_EMAIL", userEmail)
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
-
     }
-
 }
-

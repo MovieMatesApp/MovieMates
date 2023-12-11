@@ -25,7 +25,7 @@ class MovieInfoAdapter(private val context: Context, private val movieInfoList: 
 
         // Set movie details to the views
         holder.titleTextView.text = movieInfo.movieTitle
-        holder.overviewTextView.text = movieInfo.movieOverview
+        holder.overviewTextView.text = movieInfo.overview
 
         // Load poster image using Glide library
         Glide.with(context)
