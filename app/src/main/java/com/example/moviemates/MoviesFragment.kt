@@ -71,15 +71,25 @@ class MoviesFragment : Fragment() {
                     //TODO - Parse JSON into Models
                     Log.d("JSON Response", json.toString())
                     val resultsJSON = json.jsonObject.get("results")
-                    Log.d("line 74", resultsJSON.toString());
+                    Log.d("line 74", resultsJSON.toString())
                     val gson = Gson()
                     val arrayMovieType = object : TypeToken<List<Movie>>() {}.type
                     val models: List<Movie> = gson.fromJson(resultsJSON.toString(), arrayMovieType)
                     movies.addAll(models)
                     movieAdapter.notifyDataSetChanged()
+
+                    // Display attributes of each Movie
+                    for (movie in models) {
+                        Log.d("MoviesFragment", "Title: ${movie.name}")
+                        Log.d("MoviesFragment", "Release Date: ${movie.original_language}")
+                        Log.d("MoviesFragment", "Release Date: ${movie.overview}")
+                        // Add more Log statements for other attributes as needed
+                    }
+
                     // Look for this in Logcat:
                     Log.d("MoviesFragment", "response successful")
                 }
+
 
                 /*
                  * The onFailure function gets called when

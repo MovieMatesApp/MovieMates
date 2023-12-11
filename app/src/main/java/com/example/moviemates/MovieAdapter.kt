@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -36,22 +37,19 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
         init {
             itemView.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
-            val movie = movies.getOrNull(absoluteAdapterPosition)
+            val movie = movies.getOrNull(adapterPosition)
             if (movie != null) {
-                Log.d(TAG, "Selected Movie: ${movie.name}")
-
-                // Display a Toast message
-                Toast.makeText(context, "Selected Movie: ${movie.name}", Toast.LENGTH_SHORT).show()
-
-                // Uncomment the following lines if you want to navigate to the details screen
-                //val intent = Intent(context, MovieDetailFragment::class.java)
-                //intent.putExtra(MOVIE_EXTRA, movie)
-                //context.startActivity(intent)
+                val toastMessage = "Selected Movie: ${movie.name}"
+                Log.d(TAG, toastMessage)
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
             }
         }
+
+
 
         fun bind(flixster: Movie) {
             mediaTitleView.text = flixster.name

@@ -1,8 +1,14 @@
 package com.example.moviemates.movieModels
 
-data class EventModel(
-    var comment: String,
-    val userId: String,
-    val userEmail: String,
-    val eventDate: String
-)
+import com.google.gson.Gson
+
+// MovieInfoJsonParser.kt
+
+
+object MovieInfoJsonParser {
+
+    fun parseMovieInfoList(jsonString: String): List<MovieInfo> {
+        return Gson().fromJson(jsonString, Array<MovieInfo>::class.java).toList()
+    }
+}
+
