@@ -4,29 +4,36 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviemates.R
-import com.example.moviemates.movieModels.EventModel
+import com.google.firebase.auth.FirebaseUser
 
-class UserAdapter(private val eventList: List<EventModel>) : RecyclerView.Adapter<UserAdapter.CommentViewHolder>() {
+class UserAdapter : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activty_item_events, parent, false)
-        return CommentViewHolder(view)
+    private var users: List<FirebaseUser> = emptyList()
+
+    fun setUsers(users: List<FirebaseUser>) {
+        this.users = users
+        notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val events = eventList[position]
-        holder.eventTextView.text= events.comment
-        holder.eventDate.text =events.eventDate
-        holder.userData.text =events.userEmail
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.user_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(users[position])
     }
 
     override fun getItemCount(): Int {
-        return eventList.size
+        return users.size
     }
 
-    class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val eventTextView: TextView = itemView.findViewById(R.id.eventDisplayText)
-        val eventDate: TextView = itemView.findViewById(R.id.eventDateTextView)
-        val userData:TextView = itemView.findViewById(R.id.userInfoTextView)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val usernameTextView: TextView = itemView.findViewById(R.id.usernameTextView)
+
+        fun bind(user: FirebaseUser) {
+            usernameTextView.text = user.displayName
+            // Add other user information as needed
+        }
     }
 }

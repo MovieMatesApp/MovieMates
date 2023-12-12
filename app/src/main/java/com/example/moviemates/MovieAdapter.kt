@@ -42,6 +42,14 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
         override fun onClick(v: View?) {
             val movie = movies.getOrNull(adapterPosition)
+            val intent = Intent(context, MainActivity2::class.java)
+
+            // Pass necessary data to the new activity using extras
+            intent.putExtra(MOVIE_EXTRA, movie)
+
+            // Start the new activity
+            context.startActivity(intent)
+
             if (movie != null) {
                 val toastMessage = "Selected Movie: ${movie.name}"
                 Log.d(TAG, toastMessage)

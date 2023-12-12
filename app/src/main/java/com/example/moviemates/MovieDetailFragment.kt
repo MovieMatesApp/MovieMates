@@ -29,7 +29,7 @@ class MovieDetailFragment: Fragment() {
         titleTextView = view.findViewById(R.id.mediaTitle)
         dateTextView = view.findViewById(R.id.mediaDate)
         overviewTextView = view.findViewById(R.id.mediaOverview)
-        languageTextView = view.findViewById(R.id.mediaLanguage)
+
 
         val movie = arguments?.getSerializable(MOVIE_EXTRA) as Movie
 
