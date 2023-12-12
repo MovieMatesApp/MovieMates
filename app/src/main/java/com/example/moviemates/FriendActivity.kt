@@ -10,6 +10,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 
 class FriendActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -52,12 +53,23 @@ class FriendActivity : AppCompatActivity() {
         // Fetch all Firebase Authentication users
         val auth = FirebaseAuth.getInstance()
         val users: MutableList<FirebaseUser> = mutableListOf()
-    println("ejje")
+        val usersReference = FirebaseDatabase.getInstance().getReference("users")
+
+        usersReference.get().addOnSuccessListener { snapshot ->
+            for (userSnapshot in snapshot.children) {
+                val user = userSnapshot.getValue(FirebaseUser::class.java)
+                user?.let { users.add(it) }
+            }
+            userAdapter.setUsers(users)
+        }.addOnFailureListener { exception ->
+            // Handle the failure to fetch users
+            Log.e(TAG, "Error fetching users: $exception")
+        }
 
     }
 
     // Handle the result of FirebaseUI authentication
-    override fun onActivityResult(requestCode: Int, resultCode: Intf, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
