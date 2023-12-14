@@ -63,6 +63,8 @@ class MainActivity2 : AppCompatActivity() {
                         commentAdapter.notifyDataSetChanged()
                         binding.addComment.setText("")
                         val intent = Intent(this, Dashboard::class.java)
+                        intent.putExtra("USER_EMAIL", userEmail)
+                        intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                     }
                     .addOnFailureListener { e ->

@@ -11,12 +11,14 @@ import com.example.moviemates.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.random.Random
 
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth: FirebaseAuth
-
+    private val db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -25,7 +27,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-
+        val userCollection = db.collection("users")
        binding.buttonGoToSignIn.setOnClickListener {
            val intent = Intent(this, SignInActivity::class.java)
            startActivity(intent)
@@ -38,7 +40,28 @@ class SignUpActivity : AppCompatActivity() {
             // Check if email and password are not empty
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 // Create user with email and password
-                auth.createUserWithEmailAndPassword(email, password)
+                val randomNumber = Random.nextInt(5, 100500)
+                val userId ="MVM${randomNumber}"
+                val commentData = hashMapOf(
+                    "email" to email,
+                    "password" to password,
+                    "userid" to userId
+
+                )
+
+                userCollection.add(commentData)
+                    .addOnSuccessListener { documentReference ->
+                        showToast("User added successfully with ID: ${documentReference.id}")
+
+                        showToast("Success")
+                        val intent = Intent(this, SignInActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener { e ->
+                        showToast("Error adding comment: $e")
+                    }
+
+             /*   auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
                             // Sign up success
@@ -61,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
                                     showToast("Sign up failed. Please try again.")
                             }
                         }
-                    }
+                    }*/
             } else {
                 // Display a message if email or password is empty
                 showToast("Please enter email and password")

@@ -9,15 +9,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moviemates.databinding.ActivitySignInBinding
 import com.example.moviemates.databinding.ActivitySignUpBinding
+import com.example.moviemates.movieModels.MovieComments
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var firebaseAuth: FirebaseAuth
-
+    private val db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -40,10 +42,36 @@ class SignInActivity : AppCompatActivity() {
     private fun signIn() {
         val email = binding.editTextEmail.text.toString()
         val password = binding.editTextPassword.text.toString()
-
+        val userCollection = db.collection("users")
         if (email.isNotEmpty() && password.isNotEmpty()) {
             // Use FirebaseAuth to sign in with email and password
-            firebaseAuth.signInWithEmailAndPassword(email, password)
+            userCollection.get().addOnSuccessListener { result ->
+                for (document in result) {
+                    val emaildb = document["email"] as String
+                    val passworddb = document["password"]  as? String
+                    val userId = document["userid"]  as? String
+
+                    if(email== emaildb && password==passworddb){
+
+                        showToast("Login Successful")
+
+                        val intent = Intent(this, Dashboard::class.java)
+                        intent.putExtra("USER_EMAIL", email)
+                        intent.putExtra("USER_ID", userId)
+                        startActivity(intent)
+                    }
+
+                }
+
+
+
+            }.addOnFailureListener { e ->
+                showToast("Error getting comments: $e")
+            }
+
+
+
+      /*      firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) {
                     if (it.isSuccessful) {
                         // Sign-in success
@@ -74,7 +102,7 @@ class SignInActivity : AppCompatActivity() {
                                 showToast("Sign up failed. Please try again.")
                         }
                     }
-                }
+                }*/
         } else {
             // Email or password is empty
             // You can display an error message to the user

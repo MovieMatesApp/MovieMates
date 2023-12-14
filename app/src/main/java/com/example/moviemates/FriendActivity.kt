@@ -6,75 +6,82 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviemates.databinding.ActivityEventBinding
+import com.example.moviemates.databinding.ActivityFriendBinding
+import com.example.moviemates.movieModels.EventModel
+import com.example.moviemates.movieModels.friendModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.ArrayList
 
 
 class FriendActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var userAdapter: UserAdapter
+
+    private lateinit var userEmail: String
+    private lateinit var userId: String
+    private val db = FirebaseFirestore.getInstance()
+    private lateinit var commentAdapter: UserAdapter
+    private lateinit var myItems: ArrayList<friendModel>
+    private lateinit var binding: ActivityFriendBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend) // Initialize RecyclerView
-        recyclerView = findViewById(R.id.friend_RecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        userAdapter = UserAdapter()
-        recyclerView.adapter = userAdapter
+        myItems = ArrayList()
+        userEmail = intent.getStringExtra("USER_EMAIL") ?: ""
+        userId = intent.getStringExtra("USER_ID") ?: ""
+        val eventsCollection = db.collection("users")
 
-        // Check if a user is signed in
-        val auth = FirebaseAuth.getInstance()
-        if (auth.currentUser == null) {
-            // If no user is signed in, launch FirebaseUI authentication
-            launchFirebaseUIAuth()
-        } else {
-            // If a user is already signed in, fetch and display users
-            fetchAndDisplayUsers()
-        }
-    }
-    private fun launchFirebaseUIAuth() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-            // Add other authentication providers as needed
-        )
+        println("Welcome, $userEmail!")
 
-        startActivityForResult(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .build(),
-            RC_SIGN_IN
-        )
-    }
+        eventsCollection.get().addOnSuccessListener { result ->
+            for (document in result) {
+                val emaildb = document["email"] as String
+                val useriddb = document["userid"]  as? String
 
-    private fun fetchAndDisplayUsers() {
-        // Fetch all Firebase Authentication users
-        val auth = FirebaseAuth.getInstance()
-        val users: MutableList<FirebaseUser> = mutableListOf()
+                if(useriddb!=userId){
 
+                    var  out = friendModel(
+                        friendId = useriddb.toString(),
+                        friendEmail = emaildb.toString(),
+                        userid = userId.toString(),
+                        myemail = userEmail.toString()
+                    )
 
-    }
+                    myItems.add(out)
 
-    // Handle the result of FirebaseUI authentication
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
+                }
 
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                fetchAndDisplayUsers()
-            } else {
-                // Sign in failed
-                // Handle the error
             }
+            println("sizeofItem12:"+myItems.size.toString())
+            val recyclerView: RecyclerView = findViewById(R.id.friend_RecyclerView)
+            commentAdapter = UserAdapter(myItems)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = commentAdapter
+             commentAdapter.notifyDataSetChanged()
+        }.addOnFailureListener { e ->
+
+        }
+
+
+
+
+    }
+
+    public fun isUserAlreadyFriend(friendId: String, callback: (Boolean) -> Unit) {
+        val friendsCollection = db.collection("friends")
+        val query = friendsCollection.whereEqualTo("user_id", userId).whereEqualTo("friend_id", friendId)
+
+        query.get().addOnSuccessListener { result ->
+            callback(!result.isEmpty)
+        }.addOnFailureListener { e ->
+            // Handle failure
+            callback(false)
         }
     }
 
-    companion object {
-        private const val RC_SIGN_IN = 123
-    }
+
 
 }
