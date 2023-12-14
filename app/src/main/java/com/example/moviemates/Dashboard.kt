@@ -44,7 +44,7 @@ class Dashboard : AppCompatActivity() {
         }
 
         binding.btnFriends.setOnClickListener{
-            val intent = Intent(this, FriendActivity::class.java)
+            val intent = Intent(this, MainActivity2::class.java)
             intent.putExtra("USER_EMAIL", userEmail)
             intent.putExtra("USER_ID", userId)
             startActivity(intent)

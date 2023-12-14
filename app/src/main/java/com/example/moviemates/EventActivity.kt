@@ -1,12 +1,16 @@
 package com.example.moviemates
 
+import EventAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moviemates.databinding.ActivityEventBinding
 import com.example.moviemates.movieModels.EventModel
+import com.example.moviemates.movieModels.MovieComments
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
@@ -19,7 +23,9 @@ class EventActivity : AppCompatActivity() {
     private val TAG: String = EventActivity::class.java.simpleName
     private lateinit var db: FirebaseFirestore
     private lateinit var binding: ActivityEventBinding
+    private lateinit var myItems: ArrayList<EventModel>
     private lateinit var userEmail: String
+    private lateinit var commentAdapter: EventAdapter
     private lateinit var userId: String
     private val eventArrayList = ArrayList<EventModel>()
     val firebaseAuth = FirebaseAuth.getInstance()
@@ -29,13 +35,51 @@ class EventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        myItems = ArrayList()
         val db = FirebaseFirestore.getInstance()
         val eventsCollection = db.collection("events")
 
         userEmail = intent.getStringExtra("USER_EMAIL") ?: ""
         userId = intent.getStringExtra("USER_ID") ?: ""
 
+        val recyclerView: RecyclerView = findViewById(R.id.event_view_list)
+        commentAdapter = EventAdapter(myItems)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = commentAdapter
+        eventsCollection.get().addOnSuccessListener { result ->
+            for (document in result) {
+                val comment = document["comment"] as String
+                val usermyId = document["userId"]  as? String
+                val usermyEmail = document["userEmail"]  as? String
+                val eventmyDate = document["eventDate"]  as? String
+                println("eventlist check: "+comment)
+
+                var  out = EventModel(
+                    userId = usermyId.toString(),
+                    comment = comment,
+                    userEmail = usermyEmail.toString(),
+                    eventDate = eventmyDate.toString()
+                )
+                myItems.add(out)
+            }
+            println("sizeofItem12:"+myItems.size.toString())
+            commentAdapter.notifyDataSetChanged()
+           // commentAdapter.notifyDataSetChanged()
+        }.addOnFailureListener { e ->
+            showToast("Error getting comments: $e")
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         binding.eventBtn.setOnClickListener {
             val myComment = binding.editTextEventName.text.toString()
             val eventDate = getDateFromDatePicker(binding.datePicker)
@@ -67,23 +111,7 @@ class EventActivity : AppCompatActivity() {
 
 
     }
-    private fun fetchEventsFromFirestore() {
-        db = FirebaseFirestore.getInstance()
-        db.collection("events").addSnapshotListener(object : EventListener<QuerySnapshot> {
-            override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                if (error != null) {
-                    // Handle error if needed
-                }
-                for (dc: DocumentChange in value?.documentChanges!!) {
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        eventArrayList.add(dc.document.toObject(EventModel::class.java))
-                    }
-                }
-                // Move showToast inside the listener to ensure it's called after the data is loaded
-                showToast(eventArrayList.size.toString())
-            }
-        })
-    }
+
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }

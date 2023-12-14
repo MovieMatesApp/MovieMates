@@ -15,19 +15,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="224dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextEmail"
             android:layout_width="386dp"
-            android:layout_margin="20dp"
             android:layout_height="50dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textColorHint="#808080" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -38,8 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:passwordToggleEnabled="true"
@@ -51,10 +47,8 @@
             android:layout_width="386dp"
             android:layout_height="50dp"
             android:hint="Password"
-
-
             android:inputType="textPassword"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textColorHint="#808080" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,29 +58,26 @@
         android:id="@+id/buttonSignIn"
         android:layout_width="225dp"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="12dp"
         android:text="Sign In"
-        android:textSize="22sp"
-        android:backgroundTint="@color/primaryColor"
+        android:backgroundTint="#FF0000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
 
     <!-- Sign Up Button -->
-
-
     <Button
         android:id="@+id/buttonGoToSignUp"
-        android:layout_width="225dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/primaryColor"
+        android:layout_width="159dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="252dp"
         android:text="Sign Up"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:backgroundTint="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSignIn" />
+
 
     <TextView
         android:id="@+id/editTextText2"
@@ -94,7 +85,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Welcome Back!"
+        android:text="Sign In"
+        android:textColor="@color/yellow"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
@@ -103,6 +95,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.865" />
+
+    <TextView
+        android:id="@+id/editTextText4"
+        android:layout_width="170dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="New and need an account?"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGoToSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"

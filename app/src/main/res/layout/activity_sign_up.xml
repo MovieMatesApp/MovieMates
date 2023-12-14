@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/black"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
@@ -55,7 +55,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         android:text="Sign Up"
-        android:backgroundTint="#FF0000"
+        android:backgroundTint="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
@@ -66,8 +66,8 @@
         android:layout_height="42dp"
         android:layout_marginTop="252dp"
         android:text="Sign In"
-        android:textColor="#FF0000"
-        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSignUp" />
@@ -79,7 +79,7 @@
         android:ems="10"
         android:inputType="text"
         android:text="Sign Up"
-        android:textColor="#FF0000"
+        android:textColor="@color/yellow"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
@@ -110,7 +110,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon" />
+        app:srcCompat="@drawable/logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
