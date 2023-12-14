@@ -39,13 +39,16 @@
             android:name=".EventActivity"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".myMovieListFragment"
             android:exported="false" />
         <activity
             android:name=".mymovielistfragment"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

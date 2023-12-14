@@ -31,8 +31,9 @@ class Dashboard : AppCompatActivity() {
         binding.welcomeMessage.text = "Welcome, $userEmail!"
 
         if (savedInstanceState == null) {
+            val moviesFragment = MoviesFragment.newInstance(userId, userEmail)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, MoviesFragment())
+                .replace(R.id.fragmentContainer, moviesFragment)
                 .commit()
         }
 

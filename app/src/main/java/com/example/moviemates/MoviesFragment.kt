@@ -34,15 +34,26 @@ private const val MOVIE_SEARCH_URL = "https://api.themoviedb.org/3/movie/popular
 class MoviesFragment : Fragment() {
     private val movies = mutableListOf<Movie>()
     private lateinit var moviesRecyclerView: RecyclerView
+    companion object {
 
+        fun newInstance(userId: String, userEmail: String): MoviesFragment {
+            val fragment = MoviesFragment()
+            val args = Bundle()
+            args.putString("USER_ID", userId)
+            args.putString("USER_EMAIL", userEmail)
+            fragment.arguments = args
+            return fragment
+        }}
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View?{
         val view= inflater.inflate(R.layout.movies_fragment,container,false)
-
+        val userId = arguments?.getString("USER_ID", "") ?: ""
+        val userEmail = arguments?.getString("USER_EMAIL", "") ?: ""
         moviesRecyclerView = view.findViewById(R.id.movieListRecycleView)
-        val movieAdapter =MovieAdapter(requireContext(), movies)
+
+        val movieAdapter =MovieAdapter(requireContext(), movies,userId,userEmail)
         moviesRecyclerView.adapter = movieAdapter
 
         moviesRecyclerView.layoutManager = LinearLayoutManager(requireContext()).also {
@@ -80,6 +91,8 @@ class MoviesFragment : Fragment() {
 
                     // Display attributes of each Movie
                     for (movie in models) {
+                        println("${movie.name},")
+
                         Log.d("MoviesFragment", "Title: ${movie.name}")
                         Log.d("MoviesFragment", "Release Date: ${movie.original_language}")
                         Log.d("MoviesFragment", "Release Date: ${movie.overview}")

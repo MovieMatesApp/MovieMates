@@ -23,6 +23,7 @@ data class Movie(
     val first_air_date: String?,
     @SerialName("name")
     val name: String?,
+
     @SerialName("original_language")
     val original_language: String?,
 ):java.io.Serializable {

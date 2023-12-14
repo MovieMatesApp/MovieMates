@@ -20,6 +20,7 @@ class MainActivity2 : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var userEmail: String
     private lateinit var userId: String
+    private lateinit var movieIndex: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +30,8 @@ class MainActivity2 : AppCompatActivity() {
         myItems = ArrayList()
         userEmail = intent.getStringExtra("USER_EMAIL") ?: ""
         userId = intent.getStringExtra("USER_ID") ?: ""
+        movieIndex = intent.getStringExtra("MOVIE_EXTRA") ?: ""
+
         binding.textViewEmail.text ="Welcome, $userEmail!"
 
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -48,7 +51,8 @@ class MainActivity2 : AppCompatActivity() {
 
                 val commentData = hashMapOf(
                     "comment" to myComment,
-                    "userId" to userEmail
+                    "userId" to userEmail,
+                    "movieIndex" to movieIndex
                 )
 
 
@@ -58,7 +62,7 @@ class MainActivity2 : AppCompatActivity() {
                         comments.add(myComment)
                         commentAdapter.notifyDataSetChanged()
                         binding.addComment.setText("")
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, Dashboard::class.java)
                         startActivity(intent)
                     }
                     .addOnFailureListener { e ->
@@ -74,15 +78,19 @@ class MainActivity2 : AppCompatActivity() {
             for (document in result) {
                 val comment = document["comment"] as String
                 val usermyId = document["userId"]  as? String
+                val movieIndextest = document["movieIndex"]  as? String
                 comments.add(comment)
 
                 println("helllo"+usermyId)
-                var  out = MovieComments(
-                    userId = usermyId.toString(),
-                    comment = comment
-                )
+                if(movieIndextest==movieIndex){
+                    var  out = MovieComments(
+                        userId = usermyId.toString(),
+                        comment = comment
+                    )
 
-                myItems.add(out)
+                    myItems.add(out)
+                }
+
             }
             println("sizeofItem:"+myItems.size.toString())
 

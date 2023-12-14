@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 const val MOVIE_EXTRA = "MOVIE_EXTRA"
+const val USER_EMAIL = "USER_EMAIL"
+const val USER_ID = "USER_ID"
 private const val TAG = "PersonAdapter"
-class MovieAdapter(private val context: Context, private val movies: List<Movie>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class MovieAdapter(private val context: Context, private val movies: List<Movie>, private val userId: String,
+                   private val userEmail: String) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie, parent, false)
@@ -34,21 +37,48 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
         private val mediaImageView = itemView.findViewById<ImageView>(R.id.mediaImage)
         private val mediaTitleView = itemView.findViewById<TextView>(R.id.mediaTitle)
-
+        private val addPostButton = itemView.findViewById<Button>(R.id.addPost)
         init {
             itemView.setOnClickListener(this)
+            addPostButton.setOnClickListener {
+                val movieIndex = layoutPosition
+                if (movieIndex != RecyclerView.NO_POSITION) {
+                    val movie = movies.getOrNull(movieIndex)
+                    if (movie != null) {
+                        val intent = Intent(context, MainActivity2::class.java)
+                        intent.putExtra(MOVIE_EXTRA, movieIndex.toString())
+
+                        intent.putExtra(USER_EMAIL, userEmail)
+                        intent.putExtra(USER_ID, userId)
+                        Toast.makeText(context, "Clicked on movie at index $movieIndex", Toast.LENGTH_SHORT).show()
+                        context.startActivity(intent)
+                    }
+                }
+
+            }
 
         }
 
         override fun onClick(v: View?) {
             val movie = movies.getOrNull(adapterPosition)
-            val intent = Intent(context, MainActivity2::class.java)
 
+            if (position != RecyclerView.NO_POSITION) {
+                val movie = movies[position]
+                val intent = Intent(context, MainActivity2::class.java)
+                intent.putExtra(MOVIE_EXTRA, position)
+                intent.putExtra(USER_EMAIL, userEmail)
+                intent.putExtra(USER_ID, userId)
+                Toast.makeText(context, position, Toast.LENGTH_SHORT).show()
+
+
+                // Start the new activity
+                context.startActivity(intent)
+               // val toastMessage = "Selected Movie at position $position: ${movie.overview}"
+               // Log.d(TAG, toastMessage)
+               // Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+            }
             // Pass necessary data to the new activity using extras
-            intent.putExtra(MOVIE_EXTRA, movie)
 
-            // Start the new activity
-            context.startActivity(intent)
 
             if (movie != null) {
                 val toastMessage = "Selected Movie: ${movie.name}"
@@ -60,7 +90,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
 
         fun bind(flixster: Movie) {
-            mediaTitleView.text = flixster.name
+            mediaTitleView.text = flixster.overview
 
             Glide.with(context)
                 .load("https://image.tmdb.org/t/p/w500" + flixster.poster_path)

@@ -18,33 +18,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="386dp"
-            android:layout_height="50dp"
-            android:hint="Comment"
-
-            android:textColor="@color/black"
-            android:textColorHint="#808080" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
 
     <Button
         android:id="@+id/btnPost"
         android:layout_width="225dp"
         android:layout_height="0dp"
-       android:layout_margin="16dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/yellow"
         android:text="Add Event"
-        android:backgroundTint="#FF0000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postText" />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="386dp"
+        android:layout_height="50dp"
+        android:hint="Comment"
 
-
-
+        android:textColor="@color/black"
+        android:textColorHint="#808080"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="60dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

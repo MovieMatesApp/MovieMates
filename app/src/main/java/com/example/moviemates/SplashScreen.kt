@@ -11,7 +11,7 @@ class SplashScreen : AppCompatActivity() {
         redirectAfterDelay()
     }
     private fun redirectAfterDelay() {
-        val delayMillis = 5000L
+        val delayMillis = 3000L
 
 
         val handler = android.os.Handler()
