@@ -3,6 +3,7 @@ package com.example.moviemates
 import EventAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import java.util.*
 
 class EventActivity : AppCompatActivity() {
@@ -60,11 +63,12 @@ class EventActivity : AppCompatActivity() {
                     userEmail = usermyEmail.toString(),
                     eventDate = eventmyDate.toString()
                 )
+                println("66$eventmyDate")
                 myItems.add(out)
             }
             println("sizeofItem12:"+myItems.size.toString())
             commentAdapter.notifyDataSetChanged()
-           // commentAdapter.notifyDataSetChanged()
+            commentAdapter.notifyDataSetChanged()
         }.addOnFailureListener { e ->
             showToast("Error getting comments: $e")
         }
@@ -90,12 +94,45 @@ class EventActivity : AppCompatActivity() {
                     "comment" to myComment,
                     "userId" to userId,
                     "userEmail" to userEmail,
-                    "eventDate" to eventDate
+                    "eventDate" to eventDate.toString()
                 )
 
                 eventsCollection.add(commentData)
                     .addOnSuccessListener { documentReference ->
                         showToast("Event added successfully with ID: ${documentReference.id}")
+                        val notificationTitle = "Movie Mate Notification"
+                        val notificationBody = "$myComment updated by $userEmail"
+
+                        val data = mapOf(
+                            "title" to notificationTitle,
+                            "body" to notificationBody
+                        )
+
+                        val message = RemoteMessage.Builder(userId)
+                            .setData(data)
+                            .build()
+
+                        FirebaseMessaging.getInstance().send(message)
+
+                        // Get the FCM token
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val token = task.result
+                                Log.d(TAG, "FCM Token: $token")
+
+                                // Save the token to Firestore or handle it as needed
+                                if (token != null) {
+                                    saveTokenToFirestore(token)
+                                }
+                            } else {
+                                Log.w(TAG, "Fetching FCM token failed", task.exception)
+                            }
+                        }
+
+
+
+
+
                         showToast(eventArrayList.size.toString())
                         binding.editTextEventName.setText("")
 
@@ -110,6 +147,21 @@ class EventActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun saveTokenToFirestore(token: String) {
+        val db = FirebaseFirestore.getInstance()
+        val tokenData = hashMapOf("token" to token)
+
+        // Assuming "fcm_tokens" is the collection name
+        db.collection("fcm_tokens").document(userId)
+            .set(tokenData)
+            .addOnSuccessListener {
+                Log.d(TAG, "Token saved to Firestore successfully")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error saving token to Firestore", e)
+            }
     }
 
     private fun showToast(message: String) {
